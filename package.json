@@ -1,0 +1,19 @@
+{
+  "name": "backendnode",
+  "version": "1.0.0",
+  "description": "Backend Angular Avanzado",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Camilo V",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.7"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}

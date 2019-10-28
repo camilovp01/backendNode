@@ -1,7 +1,7 @@
 var express = require('express');
 var bcrypt = require('bcryptjs');
 
-var mdAtenticacion = require('../middlewares/autenticacion');
+var mdAutenticacion = require('../middlewares/autenticacion');
 
 var app = express();
 
@@ -10,6 +10,7 @@ var Usuario = require('../models/usuario');
 
 //Rutas nex se refiere a que cuando se ejecute continue con otra instruccion (se usa con middlewares)
 app.get('/', (req, resp, next) => {
+    var desde = Number(req.query.desde || 0);
 
     Usuario.find({}, 'nombre email img role', (err, usuarios) => {
         if (err) {
@@ -20,11 +21,16 @@ app.get('/', (req, resp, next) => {
             });
         }
 
-        resp.status(200).json({
-            ok: true,
-            usuario: usuarios
+        Usuario.count({}, (err, conteo) => {
+            resp.status(200).json({
+                ok: true,
+                usuario: usuarios,
+                total: conteo
+            });
         });
-    });
+
+    }).skip(desde)
+        .limit(5);
 });
 
 //Verificar Token
@@ -48,7 +54,7 @@ app.get('/', (req, resp, next) => {
 
 
 // Agregar Usuario
-app.post('/', mdAtenticacion.verificaToken, (req, resp, next) => {
+app.post('/', mdAutenticacion.verificaToken, (req, resp, next) => {
     var body = req.body;
 
     var usuario = new Usuario({
@@ -78,7 +84,7 @@ app.post('/', mdAtenticacion.verificaToken, (req, resp, next) => {
 });
 
 //Actualizar Usuario
-app.put('/:id', mdAtenticacion.verificaToken, (req, resp) => {
+app.put('/:id', mdAutenticacion.verificaToken, (req, resp) => {
     var id = req.params.id;
     var body = req.body;
 
@@ -95,7 +101,7 @@ app.put('/:id', mdAtenticacion.verificaToken, (req, resp) => {
         if (!usuario) {
             return resp.status(400).json({
                 ok: false,
-                mensaje: 'Usuario con el id ' + id + 'no existe',
+                mensaje: 'Usuario con el id ' + id + ' no existe',
                 errors: { message: 'No existe un usuario con ese ID' }
             });
         }
@@ -123,7 +129,7 @@ app.put('/:id', mdAtenticacion.verificaToken, (req, resp) => {
 
 
 //Borrar Usuario
-app.delete('/:id', mdAtenticacion.verificaToken, (req, resp) => {
+app.delete('/:id', mdAutenticacion.verificaToken, (req, resp) => {
     var id = req.params.id;
 
     Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {

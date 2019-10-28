@@ -1,9 +1,24 @@
 // Requires
 var express = require('express');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser')
 
 //Inicializar variables
 var app = express();
+
+
+//Body Parser
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false })) 
+// parse application/json
+app.use(bodyParser.json())
+
+
+
+//importar rutas
+var appRoutes = require('./routes/app');
+var usuarioRoutes = require('./routes/usuario');
+var loginRoutes = require('./routes/login');
 
 
 //Conexión DB
@@ -12,13 +27,11 @@ mongoose.connect('mongodb://localhost:27017/hospitalDB', { useNewUrlParser: true
     console.log('Data Base Server running on port 27017:\x1b[32m%s\x1b[0m', ' online');
 });
 
-//Rutas nex se refiere a que cuando se ejecute continue con otra instruccion (se usa con middlewares)
-app.get('/', (req, resp, next) => {
-    resp.status(200).json({
-        ok: true,
-        mensaje: 'OK'
-    });
-});
+
+//Rutas
+app.use('/usuario', usuarioRoutes);
+app.use('/login', loginRoutes);
+app.use('/', appRoutes);
 
 
 //Escuchar peticiones

@@ -1,6 +1,6 @@
 var express = require('express');
 var fileUpload = require('express-fileupload');
-var fs = require('fs');
+var fs = require('fs'); //-> ya viene con node
 
 var app = express();
 
@@ -56,11 +56,13 @@ app.put('/:coleccion/:id', (req, resp) => {
             });
         }
 
-        subirPorTipo(coleccion, id, path, resp);
+        subirPorTipo(coleccion, id, nombreArchivo, resp);
     });
 });
 
-function subirPorTipo(coleccion, id, path, resp) {
+function subirPorTipo(coleccion, id, nombreArchivo, resp) {
+
+    let path = './uploads/' + coleccion + '/';
 
     switch (coleccion) {
         case 'usuarios':
@@ -80,11 +82,11 @@ function subirPorTipo(coleccion, id, path, resp) {
                     });
                 }
 
-                if (fs.existsSync(usuarioDb.img)) {
-                    fs.unlinkSync(usuarioDb.img);
+                if (fs.existsSync(path + usuarioDb.img)) {
+                    fs.unlinkSync(path + usuarioDb.img);
                 }
 
-                usuarioDb.img = path;
+                usuarioDb.img = nombreArchivo;
 
                 usuarioDb.save((err, usuarioActualizado) => {
                     if (err) {
@@ -121,11 +123,11 @@ function subirPorTipo(coleccion, id, path, resp) {
                     });
                 }
 
-                if (fs.existsSync(medicoDb.img)) {
-                    fs.unlinkSync(medicoDb.img);
+                if (fs.existsSync(path + medicoDb.img)) {
+                    fs.unlinkSync(path + medicoDb.img);
                 }
 
-                medicoDb.img = path;
+                medicoDb.img = nombreArchivo;
 
                 medicoDb.save((err, medicoActualizado) => {
                     if (err) {
@@ -162,11 +164,11 @@ function subirPorTipo(coleccion, id, path, resp) {
                     });
                 }
 
-                if (fs.existsSync(hospitalDb.img)) {
-                    fs.unlinkSync(hospitalDb.img);
+                if (fs.existsSync(path + hospitalDb.img)) {
+                    fs.unlinkSync(path + hospitalDb.img);
                 }
 
-                hospitalDb.img = path;
+                hospitalDb.img = nombreArchivo;
 
                 hospitalDb.save((err, hospitalActualizado) => {
                     if (err) {

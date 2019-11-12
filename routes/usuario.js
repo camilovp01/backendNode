@@ -12,7 +12,7 @@ var Usuario = require('../models/usuario');
 app.get('/', (req, resp, next) => {
     var desde = Number(req.query.desde || 0);
 
-    Usuario.find({}, 'nombre email img role', (err, usuarios) => {
+    Usuario.find({}, 'nombre email img role google', (err, usuarios) => {
         if (err) {
             return resp.status(500).json({
                 ok: false,
@@ -24,7 +24,7 @@ app.get('/', (req, resp, next) => {
         Usuario.count({}, (err, conteo) => {
             resp.status(200).json({
                 ok: true,
-                usuario: usuarios,
+                usuarios: usuarios,
                 total: conteo
             });
         });
@@ -54,7 +54,7 @@ app.get('/', (req, resp, next) => {
 
 
 // Agregar Usuario
-app.post('/', mdAutenticacion.verificaToken, (req, resp, next) => {
+app.post('/', (req, resp, next) => {
     var body = req.body;
 
     var usuario = new Usuario({

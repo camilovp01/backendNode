@@ -81,7 +81,7 @@ async function verify(token) {
 app.post('/google', async (req, resp) => {
     var token = req.body.token;
     var googleUser = await verify(token).catch(err => {
-        return resp.status(403).json({
+        resp.status(403).json({
             ok: false,
             mensaje: 'Token no válido.',
             errors: err

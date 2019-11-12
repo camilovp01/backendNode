@@ -32,15 +32,15 @@ app.get('/coleccion/:tabla/:busqueda', (req, resp) => {
     var promesa;
 
     switch (tabla.toLowerCase()) {
-        case 'hospital':
+        case 'hospitales':
             promesa = buscarHospitales(regex);
             break;
 
-        case 'medico':
+        case 'medicos':
             promesa = buscarMedicos(regex);
             break;
 
-        case 'usuario':
+        case 'usuarios':
             promesa = buscarUsuarios(regex);
             break;
 
@@ -96,7 +96,7 @@ function buscarMedicos(regex) {
 
 function buscarUsuarios(regex) {
     return new Promise((resolve, reject) => {
-        Usuario.find({}, 'nombre email', (err, usuarios) => {
+        Usuario.find({}, 'nombre email img role google', (err, usuarios) => {
             if (err) {
                 reject("Error al buscar usuarios", err);
             } else {

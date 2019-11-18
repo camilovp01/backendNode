@@ -51,7 +51,8 @@ app.post('/', (req, resp) => {
             ok: true,
             usuario: usuarioDB,
             token: token,
-            id: usuarioDB.id
+            id: usuarioDB.id,
+            menu: obtenerMenu(usuarioDB.role)
         });
 
     });
@@ -104,7 +105,8 @@ app.post('/google', async (req, resp) => {
                     ok: true,
                     usuario: usuarioDB,
                     token: token,
-                    id: usuarioDB.id
+                    id: usuarioDB.id,
+                    menu: obtenerMenu(usuarioDB.role)
                 });
             } else {
                 return resp.status(400).json({
@@ -134,11 +136,44 @@ app.post('/google', async (req, resp) => {
                     ok: true,
                     usuario: usuarioGuardado,
                     token: token,
-                    id: usuarioGuardado.id
+                    id: usuarioGuardado.id,
+                    menu: obtenerMenu(usuarioGuardado.role)
                 });
             })
         }
     });
 });
+
+function obtenerMenu(role) {
+    menu = [
+        {
+            titulo: 'principal',
+            icono: 'mdi mdi-gauge',
+            submenu: [
+                { titulo: 'DashBoard', url: '/dashboard' },
+                { titulo: 'Progress', url: '/progress' },
+                { titulo: 'Grafica1', url: '/grafica1' },
+                { titulo: 'Promesas', url: '/promesas' },
+                { titulo: 'RxJs', url: '/rxjs' },
+                { titulo: 'RxJs', url: '/rxjs' },
+            ]
+        },
+        {
+            titulo: 'Mantenimientos',
+            icono: 'mdi mdi-folder-lock-open',
+            submenu: [
+                //{ titulo: 'Usuarios', url: '/usuarios' },
+                { titulo: 'Hospitales', url: '/hospitales' },
+                { titulo: 'Médicos', url: '/medicos' },
+            ]
+        }
+    ];
+
+    if (role === "ADMIN_ROLE") {
+        menu[1].submenu.unshift({ titulo: 'Usuarios', url: '/usuarios' });
+    }
+
+    return menu;
+}
 
 module.exports = app

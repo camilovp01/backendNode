@@ -24,3 +24,31 @@ exports.verificaToken = function (req, resp, next) {
     });
 }
 
+
+exports.verificaAdminRole = (req, resp, next) => {
+    var usuario = req.usuario;
+    if (usuario.role == "ADMIN_ROLE") {
+        next();
+    } else {
+        return resp.status(401).json({
+            ok: false,
+            mensaje: 'Operación no permitida rol incorrecto',
+            errors: { message: 'No es Administrador' }
+        });
+    }
+}
+
+exports.verificaAdminOMismoUsuario = (req, resp, next) => {
+    var usuario = req.usuario;
+    var id = req.params.id;
+    if (usuario.role === "ADMIN_ROLE" || usuario._id === id) {
+        next();
+    } else {
+        return resp.status(401).json({
+            ok: false,
+            mensaje: 'Operación no permitida rol incorrecto',
+            errors: { message: 'No es Administrador o no es el mismo usuario' }
+        });
+    }
+}
+

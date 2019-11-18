@@ -32,6 +32,26 @@ app.get('/', (req, resp) => {
 
 });
 
+app.get('/:id', (req, resp) => {
+    var id = req.params.id;
+
+    Medico.findById(id, (err, medico) => {
+        if (err) {
+            return resp.status(500).json({
+                ok: false,
+                mensaje: 'Error cargando medicos',
+                errors: err
+            });
+        }
+        resp.status(200).json({
+            ok: true,
+            medico
+        });
+    }).populate('usuario', ['nombre', 'email', 'img'])
+        .populate('hospital');
+
+});
+
 app.post('/', mdAutenticacion.verificaToken, (req, resp) => {
     var body = req.body;
     var medico = new Medico({

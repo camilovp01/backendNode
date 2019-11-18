@@ -12,7 +12,11 @@ app.get('/todo/:busqueda', (req, resp) => {
     var regex = new RegExp(busqueda, 'i'); // 'i' insensible ante mayusculas y minusculas
 
     Promise.all(
-        [buscarHospitales(regex), buscarMedicos(regex), buscarUsuarios(regex)]
+        [
+            buscarHospitales(regex),
+            buscarMedicos(regex),
+            buscarUsuarios(regex)
+        ]
     ).then(respuestas => {
         resp.status(200).json({
             ok: true,
@@ -60,7 +64,7 @@ app.get('/coleccion/:tabla/:busqueda', (req, resp) => {
     }).catch(err => {
         resp.status(500).json({
             ok: false,
-            mensaje: 'Error buscando [tabla]',
+            mensaje: 'Error buscando ' + tabla,
             error: 'Error buscando ' + tabla + ' ' + err
         });
     });

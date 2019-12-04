@@ -2,6 +2,8 @@ var express = require('express');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
+var mdAutenticacion = require('../middlewares/autenticacion');
+
 var SEED = require('../config/config').SEED;
 
 var app = express();
@@ -13,6 +15,16 @@ var Usuario = require('../models/usuario');
 var CLIENT_ID = require('../config/config').CLIENT_ID;
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
+
+
+// Renovar token
+app.get('/renovartoken', mdAutenticacion.verificaToken, (req, resp) => {
+    var token = jwt.sign({ usuario: req.usuario }, SEED, { expiresIn: 14400 }); //4horas
+    return resp.status(200).json({
+        ok: true,
+        token
+    });
+});
 
 // autenticacion normal
 app.post('/', (req, resp) => {

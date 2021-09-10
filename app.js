@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 
 //Inicializar variables
 var app = express();
+const port = process.env.PORT || 3000;
 
 //Cors
 app.use(function (req, res, next) {
@@ -52,6 +53,6 @@ app.use('/', appRoutes);
 
 
 //Escuchar peticiones
-app.listen(3000, () => {
-    console.log('Express Server running on port 3000:\x1b[32m%s\x1b[0m', ' online');
+app.listen(port, () => {
+    console.log('Express Server running on port ' + port + ':\x1b[32m%s\x1b[0m', ' online');
 })

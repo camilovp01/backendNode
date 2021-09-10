@@ -35,7 +35,7 @@ var imagenesRoutes = require('./routes/imagenes');
 
 
 //Conexión DB
-mongoose.connect('mongodb://localhost:27017/hospitalDB', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+mongoose.connect('mongodb://node-rest-api:y396wtJRV2kIDWkMEXmYdPer1nPVQ7FUtDAFlGHhIE4tb3fZEOLMQgWuGTK2zoYjxX0tyzxTor32RJdHVjmVtg==@node-rest-api.mongo.cosmos.azure.com:10255/hospitalDB?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@node-rest-api@', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
     if (err) throw err + "********************************";
     console.log('Data Base Server running on port 27017:\x1b[32m%s\x1b[0m', ' online');
 });
